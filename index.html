@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./todo_list.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <section class="title-bar">
+    <h1 class="title">Todo List</h1>
+  </section>
+  <main>
+    <ol>
+      <li class="item">
+        <div class="item-title">
+          <span class="name">item 1</span>
+          <span class="get-details">details</span>
+          <span class="trashcan">trash</span>
+        </div>
+        
+        <ul class="list-item-info">
+          <li class="detail">Due: Feb 28, 2022</li>
+          <li class="detail">Details: blah blah blah</li>
+          <li class="sublist">
+            <div class="item-title sub-item">
+              <span class="name">sub item 1</span>
+              <span class="get-details">details</span>
+              <span class="trashcan">trash</span>
+            </div>
+            <ul class="list-item-info">
+              <li class="detail sub-detail">Due: Feb 28, 2022</li>
+              <li class="detail sub-detail">Details: blah blah blah</li>
+            </ul>
+          </li>
+        </ul>
+      </li> 
+    </ol>
+
+    <form class="item">
+      <section class="list-item">
+        <label class="label-title">
+          <input type="text" class="input-title" placeholder="item name" require>
+        </label>
+        <label class="label-detail">
+          <span class="due-date">Due Date</span> 
+          <input type="date" class="input-detail" input-details" >
+        </label>
+        <label class="label-detail">
+          <textarea type="text" class="input-detail" placeholder="item details"></textarea>
+        </label>
+        <label class="label-detail">
+          <input type="text" class="input-detail" placeholder="sublist item name" require>
+        </label>
+      </section>
+      <section class="sublist">
+        <label class="label-sub-detail label-detail"><span class="due-date">Due Date</span>
+          <input type="date" class="input-detail input-sub-detail">
+        </label>
+        <label class="label-sub-detail label-detail">
+          <textarea type="text" class="input-detail input-sub-detail" placeholder="item details"></textarea>
+        </label>
+      </section>
+      <button >add sublist item</button>
+      <button class="submitBtn" type="submit">add todo</button>
+    </form>
+    
+  </main>
+</body>
+</html>

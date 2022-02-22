@@ -1,0 +1,168 @@
+:root {
+  --main: #002642;
+  --accent: #840032;
+  --accent-two: #E59500;
+  --light-accent: #E5DADA;
+  --dark-accent: #02040F;
+}
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Raleway', sans-serif;
+  color: var(--dark-accent);
+}
+html, body {
+  background: var(--main);
+  height: 100%;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+ul, ol {
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+input, textarea {
+  display:block;
+  max-width:100%;
+  font-family:inherit;
+  font-size:inherit;
+  color:inherit;
+  height: 50px;
+  line-height: 50px;
+  width: 250px;
+  min-height: 50px;
+  margin: 5px;
+  border-radius: 8px;
+  background: var(--light-accent);
+}
+label {
+  display:table;
+  position: relative;
+}
+input[type="text"]{
+  -webkit-appearance:none;
+} /*--- for Safari (add/remove types as needed) ---*/
+.title-bar {
+  background: var(--light-accent);
+  position: fixed;
+  height: 85px;
+  width: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  z-index: 1;
+}
+h1 {
+  font-size: 3.5rem;
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 22px;
+}
+main {
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  top: 100px;
+}
+.item {
+  position: relative;
+  width: 80%;
+  height: auto;
+  left: 15%;
+}
+.item-title {
+  height: 50px;
+  width: 250px;
+  position: relative;
+  background: var(--light-accent);
+  border-radius: 8px;
+  margin: 10px auto;
+}
+.name {
+  position: absolute;
+  font-size: 1.4rem;
+  font-weight: 600;
+  bottom: 0px;
+  left: 5px;
+}
+.get-details {
+  position: absolute;
+  bottom: 0;
+  right: 50px;
+  color: var(--accent);
+  cursor: pointer;
+}
+.get-details:hover {
+  color: var(--accent-two);
+  cursor: pointer;
+}
+.trashcan {
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  cursor: pointer;
+}
+.trashcan:hover {
+  color: var(--accent-two);
+}
+.detail {
+  background: var(--light-accent);
+  position: relative;
+  min-height: 40px;
+  width: 250px;
+  padding-bottom: 0;
+  padding-top: 20px;
+  padding-left: 5px;
+  left: 50px;
+  border-radius: 8px;
+  margin: 10px auto;
+}
+
+.sub-item {
+  left: 50px;
+  background: var(--light-accent);
+  margin: 10px auto;
+}
+.sub-detail {
+  background: var(--light-accent);
+  left: 100px;
+  margin: 10px auto;
+}
+.label-title {
+  margin: 10px auto;
+}
+.label-detail {
+  left: 50px;
+  margin: 10px auto;
+}
+.label-sub-detail {
+  left: 100px;
+}
+button {
+  display:block;
+  max-width:100%;
+  font-family:inherit;
+  font-size:inherit;
+  margin: 5px;
+  border-radius: 8px;
+  position: relative;
+  left: 95px;
+  width: 150px;
+  border-radius: 8px;
+  border: 2px solid var(--light-accent);
+  color: var(--light-accent);
+  background: none;
+  cursor: pointer;
+  margin: 10px auto;
+  padding: 10px 5px;
+}
+button:hover {
+  background: var(--accent-two);
+}
+.due-date {
+  color: var(--light-accent);
+}
+
