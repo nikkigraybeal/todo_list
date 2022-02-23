@@ -171,6 +171,27 @@ getSubDetails.addEventListener('click', () => {
 })
 
 
+//show signup form on click
+const loginSection = document.querySelector('.login-section')
+const signupSection = document.querySelector('.signup-section')
+const loginBtn = document.querySelector('.login')
+const signupBtn = document.querySelector('.signup')
+
+signupBtn.addEventListener('click', () => {
+  loginSection.classList.add('hide')
+  signupSection.classList.remove('hide')
+  signupBtn.classList.add('hide')
+  loginBtn.classList.remove('hide')
+})
+
+loginBtn.addEventListener('click', () => {
+  loginSection.classList.remove('hide')
+  signupSection.classList.add('hide')
+  signupBtn.classList.remove('hide')
+  loginBtn.classList.add('hide')
+})
+
+
 
 
 //add user to collection

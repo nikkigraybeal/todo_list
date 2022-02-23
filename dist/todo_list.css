@@ -60,12 +60,56 @@ h1 {
   margin: 0 auto;
   margin-top: 22px;
 }
+.nav {
+  position: absolute;
+  display: flex;
+  width: auto;
+  right: 0;
+  top: 55px;
+  font-size: 1.4rem;
+}
+.nav span {
+  padding: 0 8px;
+  cursor: pointer;
+  color: var(--accent);
+}
+.nav span:hover {
+  color: var(--accent-two);
+}
 main {
   display: block;
   position: relative;
   width: auto;
   height: auto;
   top: 100px;
+}
+.login-section, .signup-section {
+  width: 80%;
+  margin: 50px auto 0;
+  text-align: center;
+}
+.login-title, .signup-title {
+  font-size: 2.5rem;
+  color: var(--light-accent);
+  margin-bottom: 30px;
+}
+.login-section label {
+  margin: 0 auto;
+  color: var(--light-accent);
+  text-align: left;
+  padding: 20px;
+}
+.login-section input {
+  color: var(--dark-accent);
+}
+.signup-section label {
+  margin: 0 auto;
+  color: var(--light-accent);
+  text-align: left;
+  padding: 10px;
+}
+.signup-section input {
+  color: var(--dark-accent);
 }
 .item {
   position: relative;

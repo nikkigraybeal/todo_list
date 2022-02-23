@@ -13,9 +13,37 @@
 <body>
   <section class="title-bar">
     <h1 class="title">Todo List</h1>
+    <div class="nav">
+      <span class="signup">signup</span>
+      <span class="login hide">login</span>
+      <span class="logout hide">logout</span>
+    </div>
   </section>
+
   <main>
-    <ol class="todos">
+    <section class="login-section">
+      <h1 class="login-title">login</h1>
+      <label>email:
+        <input type="email" class="user-email" placeholder="enter your email address">
+      </label>
+      <label>password:
+        <input type="password" class="user-password" placeholder="enter your password">
+      </label>
+    </section>
+
+    <section class="signup-section hide">
+      <h1 class="signup-title">signup</h1>
+      <label>user name:
+        <input type="text" class="user-name" placeholder="enter your user name">
+      </label>
+      <label>email:
+        <input type="email" class="user-email" placeholder="enter your email address">
+      </label>
+      <label>password:
+        <input type="password" class="user-password" placeholder="enter your password">
+      </label>
+    </section>
+    <ol class="todos hide">
       <li class="item">
         <div class="item-title">
           <span class="name">item 1</span>
@@ -41,7 +69,7 @@
       </li> 
     </ol>
 
-    <form class="item">
+    <form class="item hide">
       <section class="list-item">
         <label class="label-title">
           <input type="text" class="input-title" placeholder="item name" require>
