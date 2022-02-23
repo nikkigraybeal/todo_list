@@ -88,14 +88,15 @@ main {
   bottom: 0px;
   left: 5px;
 }
-.get-details {
+.get-details, .get-sub-details {
   position: absolute;
   bottom: 0;
   right: 50px;
   color: var(--accent);
   cursor: pointer;
+  font-size: .8rem;
 }
-.get-details:hover {
+.get-details:hover, .get-sub-details:hover {
   color: var(--accent-two);
   cursor: pointer;
 }
@@ -164,5 +165,8 @@ button:hover {
 }
 .due-date {
   color: var(--light-accent);
+}
+.hide {
+  display: none;
 }
 

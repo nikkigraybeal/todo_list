@@ -15,24 +15,24 @@
     <h1 class="title">Todo List</h1>
   </section>
   <main>
-    <ol>
+    <ol class="todos">
       <li class="item">
         <div class="item-title">
           <span class="name">item 1</span>
-          <span class="get-details">details</span>
+          <span class="get-details">show details</span>
           <span class="trashcan">trash</span>
         </div>
         
-        <ul class="list-item-info">
+        <ul class="list-item-info main-section hide">
           <li class="detail">Due: Feb 28, 2022</li>
           <li class="detail">Details: blah blah blah</li>
           <li class="sublist">
             <div class="item-title sub-item">
               <span class="name">sub item 1</span>
-              <span class="get-details">details</span>
+              <span class="get-sub-details">show details</span>
               <span class="trashcan">trash</span>
             </div>
-            <ul class="list-item-info">
+            <ul class="list-item-info sub-section hide">
               <li class="detail sub-detail">Due: Feb 28, 2022</li>
               <li class="detail sub-detail">Details: blah blah blah</li>
             </ul>
@@ -53,11 +53,11 @@
         <label class="label-detail">
           <textarea type="text" class="input-detail" placeholder="item details"></textarea>
         </label>
+      </section>
+      <section class="sublist hide">
         <label class="label-detail">
           <input type="text" class="input-detail" placeholder="sublist item name" require>
         </label>
-      </section>
-      <section class="sublist">
         <label class="label-sub-detail label-detail"><span class="due-date">Due Date</span>
           <input type="date" class="input-detail input-sub-detail">
         </label>
