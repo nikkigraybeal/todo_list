@@ -1,8 +1,4 @@
 /*
-problem: create a program that allows a user to enter todo items and delete them from a list.
-no login needed.
-list items are stored within the application itself. the app will provide a limit for number of list items allowed.
-
 classes: 
 List
   has ListItems
@@ -23,3 +19,30 @@ SubListItems
   
 */
 
+//firebase imports
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, doc, getDoc } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9jk6_fOnuG5glZxJmzGdeFfP_H2ip--0",
+  authDomain: "todo-list-16832.firebaseapp.com",
+  projectId: "todo-list-16832",
+  storageBucket: "todo-list-16832.appspot.com",
+  messagingSenderId: "346962552564",
+  appId: "1:346962552564:web:a5bc9513a45acc76a360a1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+console.log(db)
+console.log(collection)
+try {
+  const docRef = await addDoc(collection(db, "users"), {
+    name: "nikki",
+    list: {}
+  })
+  console.log("Document written with ID: ", docRef.id)
+} catch(e) {
+  console.error("Error adding document: ", e)
+}
