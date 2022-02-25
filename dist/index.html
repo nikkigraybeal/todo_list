@@ -21,7 +21,7 @@
   </section>
 
   <main>
-    <section class="login-section">
+    <form class="login-section">
       <h1 class="login-title">login</h1>
       <label>email:
         <input type="email" class="user-email" placeholder="enter your email address">
@@ -29,9 +29,10 @@
       <label>password:
         <input type="password" class="user-password" placeholder="enter your password">
       </label>
-    </section>
+      <button type="submit" class="login-btn">login</button>
+    </form>
 
-    <section class="signup-section hide">
+    <form class="signup-section hide">
       <h1 class="signup-title">signup</h1>
       <label>user name:
         <input type="text" class="user-name" placeholder="enter your user name">
@@ -42,7 +43,9 @@
       <label>password:
         <input type="password" class="user-password" placeholder="enter your password">
       </label>
-    </section>
+      <button type="submit" class="signup-btn">signup</button>
+    </form>
+
     <ol class="todos hide">
       <li class="item">
         <div class="item-title">
@@ -69,7 +72,7 @@
       </li> 
     </ol>
 
-    <form class="item hide">
+    <form class="add-todo hide">
       <section class="list-item">
         <label class="label-title">
           <input type="text" class="input-title" placeholder="item name" require>

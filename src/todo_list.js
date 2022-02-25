@@ -25,6 +25,7 @@ SubListItems
 //firebase imports
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, doc, getDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA9jk6_fOnuG5glZxJmzGdeFfP_H2ip--0",
@@ -38,6 +39,37 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+//firebase auth
+const auth = getAuth();
+
+//DOM elements
+const addTodo = document.querySelector('.add-todo')
+const itemName = addTodo.elements[0]
+const dueDate = addTodo.elements[1]
+const itemDetails = addTodo.elements[2]
+const subItem = addTodo.elements[3]
+const subDueDate = addTodo.elements[4]
+const subItemDetails = addTodo.elements[5]
+const todoList = document.querySelector('.todos')
+
+const signupSection = document.querySelector('.signup-section')
+const userName = signupSection.elements[0] 
+const userEmail = signupSection.elements[1] 
+const userPassword = signupSection.elements[2] 
+
+const loginSection = document.querySelector('.login-section')
+const loginEmail = loginSection.elements[0]
+const loginPassword = loginSection.elements[1]
+
+const loginBtn = document.querySelector('.login')
+const signupBtn = document.querySelector('.signup')
+const logoutBtn = document.querySelector('.logout')
+
+
+const getDetails = document.querySelector(".get-details")
+const getSubDetails = document.querySelector(".get-sub-details")
+const mainSec = document.querySelector(".main-section")
+const subSec = document.querySelector(".sub-section")
 
 
 class User {
@@ -79,29 +111,119 @@ class SubListItem {
 
 }
 
-//DOM elements
-const form = document.querySelector('form')
-const itemName = form.elements[0]
-const dueDate = form.elements[1]
-const itemDetails = form.elements[2]
-const subItem = form.elements[3]
-const subDueDate = form.elements[4]
-const subItemDetails = form.elements[5]
-const todoList = document.querySelector('.todos')
+//if user is logged in show todo list, else show login page
 
-//get form element values on submit
+const checkUserStatus = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      todoList.classList.remove('hide')
+      loginSection.classList.add('hide')
+      signupSection.classList.add('hide')
+      loginBtn.classList.add('hide')
+      signupBtn.classList.add('hide')
+      logoutBtn.classList.remove('hide')
+      addTodo.classList.remove('hide')
+      console.log("user signed in")
+      const uid = user.uid;
+      // ...
+    } else {
+      todoList.classList.add('hide')
+      loginSection.classList.remove('hide')
+      signupSection.classList.add('hide')
+      loginBtn.classList.add('hide')
+      signupBtn.classList.remove('hide')
+      logoutBtn.classList.add('hide')
+      addTodo.classList.add('hide')
+      console.log("user not signed in")
+    }
+  });
+}
+
+checkUserStatus()
+
+//show signup/login form on click
+signupBtn.addEventListener('click', () => {
+  loginSection.classList.add('hide')
+  signupSection.classList.remove('hide')
+  signupBtn.classList.add('hide')
+  loginBtn.classList.remove('hide')
+})
+
+loginBtn.addEventListener('click', () => {
+  loginSection.classList.remove('hide')
+  signupSection.classList.add('hide')
+  signupBtn.classList.remove('hide')
+  loginBtn.classList.add('hide')
+})
+
+//login returning user
+const handleLogin = (e) => {
+  e.preventDefault()
+
+  //login user with firebase auth
+  signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      checkUserStatus()
+      loginSection.reset()
+      //create new User obj 
+      //const user = new User(userName.value)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+  });
+}
+
+loginSection.addEventListener('submit', handleLogin)
+
+
+//signup new user
+const handleSignup = (e) => {
+  e.preventDefault()
+
+  console.log(userEmail.value, userName.value, userPassword.value)
+
+  //create new user with firebase auth
+  createUserWithEmailAndPassword(auth, userEmail.value, userPassword.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    checkUserStatus()
+    signupSection.reset()
+     //create new User obj
+    const currentUser = new User(userName.value)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+}
+
+signupSection.addEventListener('submit', handleSignup)
+
+//logout user
+const handleLogout = () => {
+  signOut(auth).then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
+  checkUserStatus()
+}
+
+logoutBtn.addEventListener('click', handleLogout)
+
+//get form element values on submit for new todo
 const handleSubmit = (e) => {
   e.preventDefault()
-  console.log("itemName: ", itemName.value)
-  console.log("dueDate: ", dueDate.value)
-  console.log("itemDetails: ", itemDetails.value)
-  console.log("subItem: ", subItem.value)
-  console.log("subDueDate: ", subDueDate.value)
-  console.log("subDetails: ", subItemDetails.value)
   generateTemplate()
-  form.reset()
+  addTodo.reset()
 }
-form.addEventListener('submit', handleSubmit)
+addTodo.addEventListener('submit', handleSubmit)
 
 
 //inject html for new todo item
@@ -135,11 +257,6 @@ const generateTemplate = () => {
 }
 
 //show/hide item details and sub item details onclick
-const getDetails = document.querySelector(".get-details")
-const getSubDetails = document.querySelector(".get-sub-details")
-const mainSec = document.querySelector(".main-section")
-const subSec = document.querySelector(".sub-section")
-
 const hidden = (el) => {
   let classList = el.classList
   let hidden
@@ -169,30 +286,6 @@ getSubDetails.addEventListener('click', () => {
     getSubDetails.innerHTML = "show details"
   }
 })
-
-
-//show signup form on click
-const loginSection = document.querySelector('.login-section')
-const signupSection = document.querySelector('.signup-section')
-const loginBtn = document.querySelector('.login')
-const signupBtn = document.querySelector('.signup')
-
-signupBtn.addEventListener('click', () => {
-  loginSection.classList.add('hide')
-  signupSection.classList.remove('hide')
-  signupBtn.classList.add('hide')
-  loginBtn.classList.remove('hide')
-})
-
-loginBtn.addEventListener('click', () => {
-  loginSection.classList.remove('hide')
-  signupSection.classList.add('hide')
-  signupBtn.classList.remove('hide')
-  loginBtn.classList.add('hide')
-})
-
-
-
 
 //add user to collection
 /*
