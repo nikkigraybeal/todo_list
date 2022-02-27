@@ -41,9 +41,6 @@ label {
   display:table;
   position: relative;
 }
-input[type="text"]{
-  -webkit-appearance:none;
-} /*--- for Safari (add/remove types as needed) ---*/
 .title-bar {
   background: var(--light-accent);
   position: fixed;
@@ -113,14 +110,18 @@ main {
 }
 .login-btn, .signup-btn {
   position: relative;
-  border: 2px solid red;
   left: -5px;
 }
 .add-todo {
   position: relative;
   width: 80%;
   height: auto;
-  left: 15%;
+  margin: 0 auto;
+}
+.add-todo-title {
+  text-align: center;
+  color: var(--light-accent);
+  margin: 50px auto -15px;
 }
 .item-title {
   height: 50px;
@@ -161,53 +162,60 @@ main {
 .detail {
   background: var(--light-accent);
   position: relative;
-  min-height: 40px;
+  min-height: 30px;
   width: 250px;
   padding-bottom: 0;
   padding-top: 20px;
   padding-left: 5px;
-  left: 50px;
+  left: 25px;
   border-radius: 8px;
   margin: 10px auto;
 }
 
 .sub-item {
-  left: 50px;
+  left: 25px;
   background: var(--light-accent);
   margin: 10px auto;
 }
 .sub-detail {
   background: var(--light-accent);
-  left: 100px;
+  left: 45px;
   margin: 10px auto;
 }
 .label-title {
-  margin: 10px auto;
+  margin: 10px auto 10px;
 }
 .label-detail {
-  left: 50px;
-  margin: 10px auto;
+  left: 25px;
+  margin: 0px auto;
 }
 .label-sub-detail {
-  left: 100px;
+  left: 45px;
+}
+.add-details-btn {
+  color: var(--accent);
+  width: 100px;
+  position: absolute;
+  left: 180px;
+  top: 55px;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.add-details-btn:hover {
+  color: var(--accent-two);
 }
 button {
-  display:block;
-  max-width:100%;
-  font-family:inherit;
-  font-size:inherit;
+  display: block;
   margin: 5px;
-  border-radius: 8px;
   position: relative;
-  left: 95px;
   width: 150px;
   border-radius: 8px;
   border: 2px solid var(--light-accent);
   color: var(--light-accent);
   background: none;
   cursor: pointer;
-  margin: 10px auto;
   padding: 10px 5px;
+  margin: 20px auto;
 }
 button:hover {
   background: var(--accent-two);

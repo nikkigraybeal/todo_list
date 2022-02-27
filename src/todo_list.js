@@ -43,6 +43,7 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 //DOM elements
+//add todo form
 const addTodo = document.querySelector('.add-todo')
 const itemName = addTodo.elements[0]
 const dueDate = addTodo.elements[1]
@@ -50,8 +51,13 @@ const itemDetails = addTodo.elements[2]
 const subItem = addTodo.elements[3]
 const subDueDate = addTodo.elements[4]
 const subItemDetails = addTodo.elements[5]
-const todoList = document.querySelector('.todos')
+const addDetails = document.querySelector('.add-details')
+const addDetailsBtn = document.querySelector('.add-details-btn')
+const addTodoBtn = document.querySelector('.add-todo-btn')
+const addSublistItemBtn = document.querySelector('.add-sublist-item-btn')
+const addSublistItem = document.querySelector('.add-sublist')
 
+//signup/login/logout
 const signupSection = document.querySelector('.signup-section')
 const userName = signupSection.elements[0] 
 const userEmail = signupSection.elements[1] 
@@ -65,12 +71,9 @@ const loginBtn = document.querySelector('.login')
 const signupBtn = document.querySelector('.signup')
 const logoutBtn = document.querySelector('.logout')
 
-
-const getDetails = document.querySelector(".get-details")
-const getSubDetails = document.querySelector(".get-sub-details")
-const mainSec = document.querySelector(".main-section")
-const subSec = document.querySelector(".sub-section")
-
+//todo list
+const todoList = document.querySelector('.todos')
+let getDetails = document.querySelectorAll(".get-details")
 
 class User {
   constructor(name) {
@@ -232,20 +235,20 @@ const generateTemplate = () => {
   <li class="item">
         <div class="item-title">
           <span class="name">${itemName.value}</span>
-          <span class="get-details">details</span>
+          <span class="get-details">show details</span>
           <span class="trashcan">trash</span>
         </div>
         
-        <ul class="list-item-info hide">
+        <ul class="list-item-info main-section hide">
           <li class="detail">Due: ${dueDate.value}</li>
           <li class="detail">Details: ${itemDetails.value}</li>
           <li class="sublist">
             <div class="item-title sub-item">
               <span class="name">${subItem.value}</span>
-              <span class="get-details">details</span>
+              <span class="get-sub-details">details</span>
               <span class="trashcan">trash</span>
             </div>
-            <ul class="list-item-info hide">
+            <ul class="list-item-info sub-section hide">
               <li class="detail sub-detail">Due: ${subDueDate.value}</li>
               <li class="detail sub-detail">Details: ${subItemDetails.value}</li>
             </ul>
@@ -254,6 +257,7 @@ const generateTemplate = () => {
       </li> `
 
   todoList.innerHTML += html;
+  addClickEvents()
 }
 
 //show/hide item details and sub item details onclick
@@ -266,25 +270,48 @@ const hidden = (el) => {
   return hidden
 }
 
-getDetails.addEventListener('click', () => {
-  if (hidden(mainSec)) {
-    mainSec.classList.remove('hide')
-    getDetails.innerHTML = "hide details"
-  } else {
-    mainSec.classList.add('hide')
-    subSec.classList.add('hide')
-    getDetails.innerHTML = "show details"
-    getSubDetails.innerHTML = "show details"
-  }
+//add click events to show details on new todos
+const addClickEvents = () => {
+  getDetails = document.querySelectorAll(".get-details")
+  getDetails.forEach(el => {
+    let mainSec = el.parentElement.nextElementSibling
+    let subSec = mainSec.children[2].children[1]
+    let getSubDetails = mainSec.children[2].children[0].children[1]
+    el.addEventListener('click', () => {
+      if (hidden(mainSec)) {
+        mainSec.classList.remove('hide')
+        el.innerHTML = "hide details"
+      } else {
+        mainSec.classList.add('hide')
+        subSec.classList.add('hide')
+        el.innerHTML = "show details"
+        getSubDetails.innerHTML = "show details"
+      }
+    })
+    getSubDetails.addEventListener('click', () => {
+      if (hidden(subSec)) {
+        subSec.classList.remove('hide')
+        getSubDetails.innerHTML = "hide details"
+      } else {
+        subSec.classList.add('hide')
+        getSubDetails.innerHTML = "show details"
+      }
+    })
+  })
+}
+
+addClickEvents()
+
+
+
+
+//show add-todo form details on click
+addDetailsBtn.addEventListener('click', () => {
+  addDetails.classList.remove('hide')
 })
-getSubDetails.addEventListener('click', () => {
-  if (hidden(subSec)) {
-    subSec.classList.remove('hide')
-    getSubDetails.innerHTML = "hide details"
-  } else {
-    subSec.classList.add('hide')
-    getSubDetails.innerHTML = "show details"
-  }
+
+addSublistItemBtn.addEventListener('click', () => {
+  addSublistItem.classList.remove('hide')
 })
 
 //add user to collection

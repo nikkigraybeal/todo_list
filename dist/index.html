@@ -73,21 +73,26 @@
     </ol>
 
     <form class="add-todo hide">
+      <h2 class="add-todo-title">add new todo</h2>
       <section class="list-item">
         <label class="label-title">
           <input type="text" class="input-title" placeholder="item name" require>
+          <span class="add-details-btn">add details</span>
         </label>
-        <label class="label-detail">
-          <span class="due-date">Due Date</span> 
-          <input type="date" class="input-detail" input-details" >
-        </label>
-        <label class="label-detail">
-          <textarea type="text" class="input-detail" placeholder="item details"></textarea>
-        </label>
+        
+        <section class="add-details hide">
+          <label class="label-detail">
+            <span class="due-date">Due Date</span> 
+            <input type="date" class="input-detail" input-details" >
+          </label>
+          <label class="label-detail">
+            <textarea type="text" class="input-detail" placeholder="item details"></textarea>
+          </label>
+        </section>
       </section>
-      <section class="sublist hide">
+      <section class="sublist add-sublist hide">
         <label class="label-detail">
-          <input type="text" class="input-detail" placeholder="sublist item name" require>
+          <input type="text" class="input-detail" placeholder="sublist item name">
         </label>
         <label class="label-sub-detail label-detail"><span class="due-date">Due Date</span>
           <input type="date" class="input-detail input-sub-detail">
@@ -96,8 +101,8 @@
           <textarea type="text" class="input-detail input-sub-detail" placeholder="item details"></textarea>
         </label>
       </section>
-      <button >add sublist item</button>
-      <button class="submitBtn" type="submit">add todo</button>
+      <button type="button" class="add-sublist-item-btn">add sublist item</button>
+      <button class="add-todo-btn" type="submit">add todo</button>
     </form>
     
   </main>
