@@ -1,30 +1,6 @@
-/*
-classes: 
-User
-  has name
-  has List
-List
-  has ListItems
-  has number of ListItems
-
-  createNewListItem
-  deleteListItem
-ListItem
-  has name
-  has dueDate
-  has details
-  has SubListItems
-  has number of SubListItems
-SubListItems
-  has name
-  has dueDate
-  has details
-  
-*/
-
 //firebase imports
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, getDocs, Timestamp, query, where, orderBy } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
@@ -43,20 +19,6 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 //DOM elements
-//add todo form
-const addTodo = document.querySelector('.add-todo')
-const itemName = addTodo.elements[0]
-const dueDate = addTodo.elements[1]
-const itemDetails = addTodo.elements[2]
-const subItem = addTodo.elements[3]
-const subDueDate = addTodo.elements[4]
-const subItemDetails = addTodo.elements[5]
-const addDetails = document.querySelector('.add-details')
-const addDetailsBtn = document.querySelector('.add-details-btn')
-const addTodoBtn = document.querySelector('.add-todo-btn')
-const addSublistItemBtn = document.querySelector('.add-sublist-item-btn')
-const addSublistItem = document.querySelector('.add-sublist')
-
 //signup/login/logout
 const signupSection = document.querySelector('.signup-section')
 const userName = signupSection.elements[0] 
@@ -73,49 +35,16 @@ const logoutBtn = document.querySelector('.logout')
 
 //todo list
 const todoList = document.querySelector('.todos')
-let getDetails = document.querySelectorAll(".get-details")
+//const getDetails = document.querySelectorAll(".get-details")
 
-class User {
-  constructor(name) {
-    this.name = name
-    this.list = new List()
-  }
-  createListItem (name, dueDate, details) {
-    const newItem = new ListItem(name, dueDate, details)
-    this.list = Object.assign(this.list, newItem)
-  }
-  
-}
-
-class List {
-  constructor() {
-    this.listItems = {}
-    this.totalItems = this.listItems.length
-  }
-}
-
-class ListItem {
-  constructor(name, dueDate, details) {
-    this.name = name
-    this.dueDate = dueDate
-    this.details = details
-    this.subListItems = {}
-    this.totalSubListItems = this.SubListItems.length
-
-  }
-}
-
-class SubListItem {
-  constructor(name, dueDate, details) {
-    this.name = name
-    this.dueDate = dueDate
-    this.details = details
-  }
-
-}
-
+//add todo form
+const addTodoForm = document.querySelector('.add-todo-form')
+const itemName = addTodoForm.elements[0]
+const itemDueDate = addTodoForm.elements[1]
+const itemDetails = addTodoForm.elements[2]
+const addDetailsBtn = document.querySelector('.add-details-btn')
+const addDetails = document.querySelector('.add-details')
 //if user is logged in show todo list, else show login page
-
 const checkUserStatus = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -125,10 +54,9 @@ const checkUserStatus = () => {
       loginBtn.classList.add('hide')
       signupBtn.classList.add('hide')
       logoutBtn.classList.remove('hide')
-      addTodo.classList.remove('hide')
+      addTodoForm.classList.remove('hide')
+      fetchTodos()
       console.log("user signed in")
-      const uid = user.uid;
-      // ...
     } else {
       todoList.classList.add('hide')
       loginSection.classList.remove('hide')
@@ -136,7 +64,7 @@ const checkUserStatus = () => {
       loginBtn.classList.add('hide')
       signupBtn.classList.remove('hide')
       logoutBtn.classList.add('hide')
-      addTodo.classList.add('hide')
+      addTodoForm.classList.add('hide')
       console.log("user not signed in")
     }
   });
@@ -169,9 +97,7 @@ const handleLogin = (e) => {
       // Signed in 
       const user = userCredential.user;
       checkUserStatus()
-      loginSection.reset()
-      //create new User obj 
-      //const user = new User(userName.value)
+      loginSection.reset() 
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -186,8 +112,6 @@ loginSection.addEventListener('submit', handleLogin)
 const handleSignup = (e) => {
   e.preventDefault()
 
-  console.log(userEmail.value, userName.value, userPassword.value)
-
   //create new user with firebase auth
   createUserWithEmailAndPassword(auth, userEmail.value, userPassword.value)
   .then((userCredential) => {
@@ -195,14 +119,10 @@ const handleSignup = (e) => {
     const user = userCredential.user;
     checkUserStatus()
     signupSection.reset()
-     //create new User obj
-    const currentUser = new User(userName.value)
-    // ...
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    // ..
   });
 }
 
@@ -220,45 +140,77 @@ const handleLogout = () => {
 
 logoutBtn.addEventListener('click', handleLogout)
 
-//get form element values on submit for new todo
-const handleSubmit = (e) => {
+//add new todo to db
+const handleSubmit = async (e) => {
   e.preventDefault()
-  generateTemplate()
-  addTodo.reset()
+  try {
+    const docRef = await addDoc(collection(db, "todos"), {
+      userId: auth.currentUser.uid,
+      itemName: itemName.value,
+      itemDueDate: Timestamp.fromDate(new Date(itemDueDate.value)),
+      itemDetails: itemDetails.value,
+    })
+    console.log("Document written with ID: ", docRef.id)
+  } catch(e) {
+    console.error("Error adding document: ", e)
+  }
+  fetchTodos()
+  addTodoForm.reset()
 }
-addTodo.addEventListener('submit', handleSubmit)
+addTodoForm.addEventListener('submit', handleSubmit)
 
+//fetch todos from db
+const fetchTodos = async () => {
+  todoList.innerHTML = ''
+  const q = query(collection(db, "todos"), where("userId", "==", auth.currentUser.uid), orderBy("itemDueDate"));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    const data = doc.data()
+    generateTemplate(data)
+    console.log(typeof data.itemDueDate)
+  });
+
+}
 
 //inject html for new todo item
-const generateTemplate = () => {
+const generateTemplate = (data) => {
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  const date = new Date(data.itemDueDate.toDate()).toLocaleDateString("en-US", options)
+  
   const html = `
-  <li class="item">
-        <div class="item-title">
-          <span class="name">${itemName.value}</span>
+    <li class="todo">
+        <div class="todo-title">
+          <span class="name">${data.itemName}</span>
           <span class="get-details">show details</span>
           <span class="trashcan">trash</span>
         </div>
         
-        <ul class="list-item-info main-section hide">
-          <li class="detail">Due: ${dueDate.value}</li>
-          <li class="detail">Details: ${itemDetails.value}</li>
-          <li class="sublist">
-            <div class="item-title sub-item">
-              <span class="name">${subItem.value}</span>
-              <span class="get-sub-details">details</span>
-              <span class="trashcan">trash</span>
-            </div>
-            <ul class="list-item-info sub-section hide">
-              <li class="detail sub-detail">Due: ${subDueDate.value}</li>
-              <li class="detail sub-detail">Details: ${subItemDetails.value}</li>
-            </ul>
-          </li>
+        <ul class="todo-details hide">
+          <li class="detail">${date}</li>
+          <li class="detail">Details: ${data.itemDetails}</li>
         </ul>
-      </li> `
-
-  todoList.innerHTML += html;
+      </li>
+      `
+  todoList.innerHTML += html
   addClickEvents()
 }
+
+//save new todo to db
+//show/hide form details
+//show add-todo form details on click
+addDetailsBtn.addEventListener('click', () => {
+  addDetails.classList.remove('hide')
+})
+
+
+//get current form values on click
+
+//get todos from db
+
+//add click events to show/hide todo details
 
 //show/hide item details and sub item details onclick
 const hidden = (el) => {
@@ -270,59 +222,20 @@ const hidden = (el) => {
   return hidden
 }
 
-//add click events to show details on new todos
 const addClickEvents = () => {
-  getDetails = document.querySelectorAll(".get-details")
+  const getDetails = document.querySelectorAll('.get-details')
   getDetails.forEach(el => {
     let mainSec = el.parentElement.nextElementSibling
-    let subSec = mainSec.children[2].children[1]
-    let getSubDetails = mainSec.children[2].children[0].children[1]
     el.addEventListener('click', () => {
       if (hidden(mainSec)) {
         mainSec.classList.remove('hide')
         el.innerHTML = "hide details"
       } else {
         mainSec.classList.add('hide')
-        subSec.classList.add('hide')
         el.innerHTML = "show details"
-        getSubDetails.innerHTML = "show details"
-      }
-    })
-    getSubDetails.addEventListener('click', () => {
-      if (hidden(subSec)) {
-        subSec.classList.remove('hide')
-        getSubDetails.innerHTML = "hide details"
-      } else {
-        subSec.classList.add('hide')
-        getSubDetails.innerHTML = "show details"
       }
     })
   })
 }
 
 addClickEvents()
-
-
-
-
-//show add-todo form details on click
-addDetailsBtn.addEventListener('click', () => {
-  addDetails.classList.remove('hide')
-})
-
-addSublistItemBtn.addEventListener('click', () => {
-  addSublistItem.classList.remove('hide')
-})
-
-//add user to collection
-/*
-try {
-  const docRef = await addDoc(collection(db, "users"), {
-    name: "nikki",
-    list: {}
-  })
-  console.log("Document written with ID: ", docRef.id)
-} catch(e) {
-  console.error("Error adding document: ", e)
-}
-*/

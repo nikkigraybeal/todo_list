@@ -112,7 +112,7 @@ main {
   position: relative;
   left: -5px;
 }
-.add-todo {
+.add-todo-form {
   position: relative;
   width: 80%;
   height: auto;
@@ -123,7 +123,7 @@ main {
   color: var(--light-accent);
   margin: 50px auto -15px;
 }
-.item-title {
+.todo-title {
   height: 50px;
   width: 250px;
   position: relative;
@@ -171,26 +171,12 @@ main {
   border-radius: 8px;
   margin: 10px auto;
 }
-
-.sub-item {
-  left: 25px;
-  background: var(--light-accent);
-  margin: 10px auto;
-}
-.sub-detail {
-  background: var(--light-accent);
-  left: 45px;
-  margin: 10px auto;
-}
 .label-title {
   margin: 10px auto 10px;
 }
 .label-detail {
   left: 25px;
   margin: 0px auto;
-}
-.label-sub-detail {
-  left: 45px;
 }
 .add-details-btn {
   color: var(--accent);

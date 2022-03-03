@@ -47,34 +47,23 @@
     </form>
 
     <ol class="todos hide">
-      <li class="item">
-        <div class="item-title">
+      <li class="todo">
+        <div class="todo-title">
           <span class="name">item 1</span>
           <span class="get-details">show details</span>
           <span class="trashcan">trash</span>
         </div>
         
-        <ul class="list-item-info main-section hide">
+        <ul class="todo-details hide">
           <li class="detail">Due: Feb 28, 2022</li>
           <li class="detail">Details: blah blah blah</li>
-          <li class="sublist">
-            <div class="item-title sub-item">
-              <span class="name">sub item 1</span>
-              <span class="get-sub-details">show details</span>
-              <span class="trashcan">trash</span>
-            </div>
-            <ul class="list-item-info sub-section hide">
-              <li class="detail sub-detail">Due: Feb 28, 2022</li>
-              <li class="detail sub-detail">Details: blah blah blah</li>
-            </ul>
-          </li>
         </ul>
       </li> 
     </ol>
 
-    <form class="add-todo hide">
+    <form class="add-todo-form hide">
       <h2 class="add-todo-title">add new todo</h2>
-      <section class="list-item">
+      <section class="add-todo">
         <label class="label-title">
           <input type="text" class="input-title" placeholder="item name" require>
           <span class="add-details-btn">add details</span>
@@ -90,18 +79,7 @@
           </label>
         </section>
       </section>
-      <section class="sublist add-sublist hide">
-        <label class="label-detail">
-          <input type="text" class="input-detail" placeholder="sublist item name">
-        </label>
-        <label class="label-sub-detail label-detail"><span class="due-date">Due Date</span>
-          <input type="date" class="input-detail input-sub-detail">
-        </label>
-        <label class="label-sub-detail label-detail">
-          <textarea type="text" class="input-detail input-sub-detail" placeholder="item details"></textarea>
-        </label>
-      </section>
-      <button type="button" class="add-sublist-item-btn">add sublist item</button>
+
       <button class="add-todo-btn" type="submit">add todo</button>
     </form>
     
