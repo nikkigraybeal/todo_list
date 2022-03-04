@@ -35,7 +35,6 @@ const logoutBtn = document.querySelector('.logout')
 
 //todo list
 const todoList = document.querySelector('.todos')
-//const getDetails = document.querySelectorAll(".get-details")
 
 //add todo form
 const addTodoForm = document.querySelector('.add-todo-form')
@@ -44,9 +43,10 @@ const itemDueDate = addTodoForm.elements[1]
 const itemDetails = addTodoForm.elements[2]
 const addDetailsBtn = document.querySelector('.add-details-btn')
 const addDetails = document.querySelector('.add-details')
+
 //if user is logged in show todo list, else show login page
 const checkUserStatus = () => {
-  onAuthStateChanged(auth, (user) => {
+ onAuthStateChanged(auth, (user) => {
     if (user) {
       todoList.classList.remove('hide')
       loginSection.classList.add('hide')
@@ -132,10 +132,10 @@ signupSection.addEventListener('submit', handleSignup)
 const handleLogout = () => {
   signOut(auth).then(() => {
     // Sign-out successful.
+    checkUserStatus()
   }).catch((error) => {
     // An error happened.
   });
-  checkUserStatus()
 }
 
 logoutBtn.addEventListener('click', handleLogout)
@@ -155,28 +155,28 @@ const handleSubmit = async (e) => {
     console.error("Error adding document: ", e)
   }
   fetchTodos()
+  addDetails.classList.add('hide')
   addTodoForm.reset()
+
 }
 addTodoForm.addEventListener('submit', handleSubmit)
 
 //fetch todos from db
 const fetchTodos = async () => {
-  todoList.innerHTML = ''
   const q = query(collection(db, "todos"), where("userId", "==", auth.currentUser.uid), orderBy("itemDueDate"));
-
+  
   const querySnapshot = await getDocs(q);
+  todoList.innerHTML = ''
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
     const data = doc.data()
     generateTemplate(data)
-    console.log(typeof data.itemDueDate)
   });
 
 }
 
 //inject html for new todo item
 const generateTemplate = (data) => {
+  console.log('from genrateTemplate')
   var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   const date = new Date(data.itemDueDate.toDate()).toLocaleDateString("en-US", options)
   
@@ -198,21 +198,12 @@ const generateTemplate = (data) => {
   addClickEvents()
 }
 
-//save new todo to db
-//show/hide form details
-//show add-todo form details on click
+//show add-todo-form details on click
 addDetailsBtn.addEventListener('click', () => {
   addDetails.classList.remove('hide')
 })
 
-
-//get current form values on click
-
-//get todos from db
-
-//add click events to show/hide todo details
-
-//show/hide item details and sub item details onclick
+//show/hide todo item details onclick
 const hidden = (el) => {
   let classList = el.classList
   let hidden
@@ -225,13 +216,13 @@ const hidden = (el) => {
 const addClickEvents = () => {
   const getDetails = document.querySelectorAll('.get-details')
   getDetails.forEach(el => {
-    let mainSec = el.parentElement.nextElementSibling
+    let todoDetails = el.parentElement.nextElementSibling
     el.addEventListener('click', () => {
-      if (hidden(mainSec)) {
-        mainSec.classList.remove('hide')
+      if (hidden(todoDetails)) {
+        todoDetails.classList.remove('hide')
         el.innerHTML = "hide details"
       } else {
-        mainSec.classList.add('hide')
+        todoDetails.classList.add('hide')
         el.innerHTML = "show details"
       }
     })
