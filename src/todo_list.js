@@ -1,6 +1,6 @@
 //firebase imports
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, doc, getDocs, Timestamp, query, where, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, getDocs, Timestamp, query, where, orderBy, deleteDoc  } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
@@ -143,11 +143,18 @@ logoutBtn.addEventListener('click', handleLogout)
 //add new todo to db
 const handleSubmit = async (e) => {
   e.preventDefault()
+
+  //validate itemDueDate
+  let dueDate
+  itemDueDate.value === '' ? 
+  dueDate = Timestamp.fromDate(new Date()) : 
+  dueDate = Timestamp.fromDate(new Date(itemDueDate.value))
+
   try {
     const docRef = await addDoc(collection(db, "todos"), {
       userId: auth.currentUser.uid,
       itemName: itemName.value,
-      itemDueDate: Timestamp.fromDate(new Date(itemDueDate.value)),
+      itemDueDate: dueDate,
       itemDetails: itemDetails.value,
     })
     console.log("Document written with ID: ", docRef.id)
@@ -176,7 +183,6 @@ const fetchTodos = async () => {
 
 //inject html for new todo item
 const generateTemplate = (data) => {
-  console.log('from genrateTemplate')
   var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   const date = new Date(data.itemDueDate.toDate()).toLocaleDateString("en-US", options)
   
@@ -196,6 +202,11 @@ const generateTemplate = (data) => {
       `
   todoList.innerHTML += html
   addClickEvents()
+}
+
+//delete todo
+const handleDelete = () => {
+
 }
 
 //show add-todo-form details on click
@@ -227,6 +238,20 @@ const addClickEvents = () => {
       }
     })
   })
+  const trashcans = document.querySelectorAll('.trashcan')
+  trashcans.forEach(can => {
+    can.addEventListener('click', async (e) => {
+      const name = e.target.parentElement.children[0].innerHTML
+      //delete todo from db
+      const todosRef = collection(db, "todos")
+      const q = query(todosRef, where("itemName", "==", name));
+      const querySnapshot = await getDocs(q); querySnapshot.forEach((dc) => {
+        // doc.data() is never undefined for query doc snapshots
+        deleteDoc(doc(db, "todos", dc.id));
+      });
+      fetchTodos()
+    })
+  }) 
 }
 
 addClickEvents()

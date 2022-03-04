@@ -179,7 +179,7 @@ main {
   margin: 0px auto;
 }
 .add-details-btn {
-  color: var(--accent);
+  color: var(--light-accent);
   width: 100px;
   position: absolute;
   left: 180px;
