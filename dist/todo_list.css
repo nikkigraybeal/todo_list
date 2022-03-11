@@ -1,7 +1,7 @@
 :root {
   --main: #002642;
-  --accent: #840032;
-  --accent-two: #E59500;
+  --accent: #be084e;
+  --accent-two: #209216;
   --light-accent: #E5DADA;
   --dark-accent: #02040F;
 }
@@ -138,25 +138,25 @@ main {
   bottom: 0px;
   left: 5px;
 }
-.get-details, .get-sub-details {
+.get-details {
   position: absolute;
   bottom: 0;
-  right: 50px;
+  right: 30px;
   color: var(--accent);
   cursor: pointer;
   font-size: .8rem;
 }
-.get-details:hover, .get-sub-details:hover {
+.get-details:hover {
   color: var(--accent-two);
   cursor: pointer;
 }
-.trashcan {
+.material-icons {
   position: absolute;
   bottom: 0;
   right: 5px;
   cursor: pointer;
 }
-.trashcan:hover {
+.material-icons:hover {
   color: var(--accent-two);
 }
 .detail {
@@ -179,7 +179,7 @@ main {
   margin: 0px auto;
 }
 .add-details-btn {
-  color: var(--light-accent);
+  color: var(--accent);
   width: 100px;
   position: absolute;
   left: 180px;

@@ -102,6 +102,7 @@ const handleLogin = (e) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log(errorCode, errorMessage)
   });
 }
 
@@ -123,6 +124,7 @@ const handleSignup = (e) => {
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(errorCode, errorMessage)
   });
 }
 
@@ -134,7 +136,7 @@ const handleLogout = () => {
     // Sign-out successful.
     checkUserStatus()
   }).catch((error) => {
-    // An error happened.
+    console.log(error)
   });
 }
 
@@ -191,7 +193,7 @@ const generateTemplate = (data) => {
         <div class="todo-title">
           <span class="name">${data.itemName}</span>
           <span class="get-details">show details</span>
-          <span class="trashcan">trash</span>
+          <span class="material-icons trashcan">delete</span>
         </div>
         
         <ul class="todo-details hide">
@@ -204,26 +206,12 @@ const generateTemplate = (data) => {
   addClickEvents()
 }
 
-//delete todo
-const handleDelete = () => {
-
-}
-
 //show add-todo-form details on click
 addDetailsBtn.addEventListener('click', () => {
   addDetails.classList.remove('hide')
 })
 
-//show/hide todo item details onclick
-const hidden = (el) => {
-  let classList = el.classList
-  let hidden
-  classList.forEach(item => {
-    item === 'hide' ? hidden = true : hidden = false
-  })
-  return hidden
-}
-
+//dynamically create click events for showing details and deleting todos
 const addClickEvents = () => {
   const getDetails = document.querySelectorAll('.get-details')
   getDetails.forEach(el => {
@@ -238,6 +226,7 @@ const addClickEvents = () => {
       }
     })
   })
+
   const trashcans = document.querySelectorAll('.trashcan')
   trashcans.forEach(can => {
     can.addEventListener('click', async (e) => {
@@ -252,6 +241,15 @@ const addClickEvents = () => {
       fetchTodos()
     })
   }) 
+}
+
+const hidden = (el) => {
+  let classList = el.classList
+  let hidden
+  classList.forEach(item => {
+    item === 'hide' ? hidden = true : hidden = false
+  })
+  return hidden
 }
 
 addClickEvents()
