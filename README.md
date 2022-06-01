@@ -1,6 +1,6 @@
 Todo List allows users to create a user account by logging in and enter and save todo items. 
 
-I built this app to practice my Javascript skills and to learn how to use firebase firestore and authentication. Bonus! I got to learn a little about webpack too. I'm still pretty unclear about it's use but I made it work and can at least navigte the documentation without too much swearing.
+I built this app to practice my Javascript skills and to learn how to use firebase firestore and authentication. Bonus! I got to learn a little about webpack too. I'm still pretty unclear about it's use but I made it work and can at least navigte the documentation without too much sweating.
 
 How it works: users signup or login and then can use the expandable form to create a new todo with due date and details. Todos are listed in due date order and can be deleted upon completion. Details and due date of todo can be expanded and collapsed for easy viewing.
 
